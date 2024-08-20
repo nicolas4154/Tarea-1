@@ -30,43 +30,55 @@ class Sistema:
         self.__lista_pacientes = [ ]
         self.__numero_pacientes = len(self.__lista_pacientes)
 
-    def ingresarPaciente(self):
-        nombre = input("Ingrese el nombre: ")
-        cedula = int(input("Ingrese la cedula: "))
-        genero = input("Ingrese el genero: ")
-        servicio = input("Ingrese el servicio: ")
-
-        p = Paciente()
-        p.asignarNombre(nombre)
-        p.asignarCedula(cedula)
-        p.asignarGenero(genero)
-        p.asignarServicio(servicio)
-        self.__lista_pacientes.append(p)
+    def ingresarPaciente(self,pac):
+        
+        self.__lista_pacientes.append(pac)
         self.__numero_pacientes = len(self.__lista_pacientes)
 
     def verNumeroPacientes(self):
         return self.__numero_pacientes
     
-    def verDatosPacientes(self):
-        cedula = int(input("Ingrese la cedula a buscar: "))
-        for paciente in self.__lista_pacientes:
-            if cedula == paciente.verCedula():
-                print("Nombre: " + paciente.verNombre())
-                print("Cedula" + str(paciente.verNombre()))
-                print("Gener: " + paciente.verGenero())
-                print("Servicio: " + paciente.verServicio())
+    def verDatosPacientes(self,c):
+        for p in self.__lista_pacientes:
+            if c == p.verCedula():
+                 return p
 
-sistema = Sistema()
+def main():
+     
+    sistema = Sistema()
+    
+    while True:
+        opcion = int(input("1. Nuevo Paciente -2. Numero de Pacientes -3. Datos Paciente -4.Salir"))
+        if opcion == 1:
+            nombre = input("Ingrese el nombre: ")
+            cedula = int(input("Ingrese la cedula: "))
+            genero = input("Ingrese el genero: ")
+            servicio = input("Ingrese el servicio: ")
+            pac= Paciente()
+            pac.asignarNombre(nombre)
+            pac.asignarCedula(cedula)
+            pac.asignarGenero(genero)
+            pac.asignarServicio(servicio)
+            sistema.ingresarPaciente()
 
-while True:
-    opcion = int(input("1. Nuevo Paciente -2. Numero de Pacientes -3. Datos Paciente -4.Salir"))
-    if opcion == 1:
-        sistema.ingresarPaciente()
-    elif opcion == 2:
-        print("Ahora hay: " + str(sistema.verNumeroPacientes()))
-    elif opcion == 3:
-        sistema.verDatosPacientes()
-    elif opcion == 4:
-        break
-    else:
-        print("Opcion invalida")
+        elif opcion == 2:
+            print("Ahora hay: " + str(sistema.verNumeroPacientes()))
+
+        elif opcion == 3:
+
+            cedula = int(input("Ingrese la cedula a buscar: "))
+            pac=sistema.verDatosPacientes
+            print("Nombre: " + pac.verNombre())
+            print("Cedula" + str(pac.verNombre()))
+            print("Gener: " + pac.verGenero())
+            print("Servicio: " + pac.verServicio())
+
+        elif opcion !=0:
+            continue
+        else:
+            print("Opcion invalida")
+            break
+            
+    
+    if __name__=="__main__":
+        main()
