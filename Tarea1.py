@@ -30,18 +30,45 @@ class Sistema:
         self.__lista_pacientes = [ ]
         self.__numero_pacientes = len(self.__lista_pacientes)
 
+    def verifpac(self,cedula):
+        encontrado= False
+        for p in self.__lista_pacientes:
+            if cedula==p.verCedula():
+                encontrado= True
+                break
+        return encontrado
+
     def ingresarPaciente(self,pac):
         
+        if self.verifpac(pac.verCedula()):
+            return False
         self.__lista_pacientes.append(pac)
-        self.__numero_pacientes = len(self.__lista_pacientes)
+        return True
 
     def verNumeroPacientes(self):
         return self.__numero_pacientes
     
     def verDatosPacientes(self,c):
+
+        resultados = []
+
+        if self.verifpac(c)== False:
+            return None
+        
         for p in self.__lista_pacientes:
             if c == p.verCedula():
-                 return p
+                resultados.append(p)
+                break
+
+        for p in self.__lista_pacientes:
+            if isinstance(c, str) and c.lower() in p.verNombre().lower():
+                resultados.append(p)
+
+        if len(resultados) == 0:
+            return None
+        return resultados
+        
+
 
 def main():
      
@@ -59,19 +86,29 @@ def main():
             pac.asignarCedula(cedula)
             pac.asignarGenero(genero)
             pac.asignarServicio(servicio)
-            sistema.ingresarPaciente()
+            resultado = sistema.ingresarPaciente(pac)
+
+            if resultado == False:
+                print("ya existe un paciente con esta cedula ")
+            else:
+                print("paciente ingresado")
 
         elif opcion == 2:
             print("Ahora hay: " + str(sistema.verNumeroPacientes()))
 
         elif opcion == 3:
 
-            cedula = int(input("Ingrese la cedula a buscar: "))
-            pac=sistema.verDatosPacientes
-            print("Nombre: " + pac.verNombre())
-            print("Cedula" + str(pac.verNombre()))
-            print("Gener: " + pac.verGenero())
-            print("Servicio: " + pac.verServicio())
+            ced_o_nom = int(input("Ingrese la cedula o el nombre a buscar: "))
+            pac=sistema.verDatosPacientes(ced_o_nom)
+            
+            if pac is None:
+                print("No se encontraron datos con ese nombre o cedula del paciente ")
+            else:
+                for pac in resultado:
+                    print("Nombre: " + pac.verNombre())
+                    print("Cedula" + str(pac.verNombre()))
+                    print("Gener: " + pac.verGenero())
+                    print("Servicio: " + pac.verServicio())
 
         elif opcion !=0:
             continue
@@ -80,5 +117,5 @@ def main():
             break
             
     
-    if __name__=="__main__":
-        main()
+if __name__=="__main__": 
+    main()
